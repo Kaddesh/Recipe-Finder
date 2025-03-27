@@ -1,4 +1,3 @@
-// Zustand Store - src/store/useRecipeStore.js
 import { create } from "zustand";
 import axios from "axios";
 
@@ -13,40 +12,88 @@ export const useRecipeStore = create((set, get) => ({
   selectedCategory: "",
   selectedCuisine: "",
   favoriteRecipes: [],
+  visibleCount: 9, // Initial count of visible recipes
 
+  // Fetch All Recipes
   fetchRecipes: async () => {
-    const response = await axios.get(`${API_URL}search.php?s=`);
-    set({ recipes: response.data.meals || [] });
+    try {
+      const response = await axios.get(`${API_URL}search.php?s=`);
+      console.log("All Recipes:", response.data.meals); // Debugging Log
+      set({ recipes: response.data.meals || [], visibleCount: 9 });
+    } catch (error) {
+      console.error("Error fetching all recipes:", error);
+    }
   },
 
+  // Fetch Recipes by Category
+  fetchRecipesByCategory: async (category) => {
+    try {
+      const response = await axios.get(`${API_URL}filter.php?c=${category}`);
+      console.log(`Recipes in category ${category}:`, response.data.meals); // Debugging Log
+      set({
+        recipes: response.data.meals || [],
+        selectedCategory: category,
+        selectedCuisine: "", // Reset cuisine
+        visibleCount: 9,
+      });
+    } catch (error) {
+      console.error("Error fetching recipes by category:", error);
+    }
+  },
+
+  // Fetch Recipes by Cuisine
+  fetchRecipesByCuisine: async (cuisine) => {
+    try {
+      const response = await axios.get(`${API_URL}filter.php?a=${cuisine}`);
+      console.log(`Recipes in cuisine ${cuisine}:`, response.data.meals); // Debugging Log
+      set({
+        recipes: response.data.meals || [],
+        selectedCuisine: cuisine,
+        selectedCategory: "", // Reset category
+        visibleCount: 9,
+      });
+    } catch (error) {
+      console.error("Error fetching recipes by cuisine:", error);
+    }
+  },
+
+  // Fetch Categories
   fetchCategories: async () => {
-    const response = await axios.get(`${API_URL}categories.php`);
-    set({ categories: response.data.categories || [] });
+    try {
+      const response = await axios.get(`${API_URL}categories.php`);
+      console.log("Categories:", response.data.categories); // Debugging Log
+      set({ categories: response.data.categories || [] });
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   },
 
+  // Fetch Cuisines
   fetchCuisines: async () => {
-    const response = await axios.get(`${API_URL}list.php?a=list`);
-    set({ cuisines: response.data.meals || [] });
+    try {
+      const response = await axios.get(`${API_URL}list.php?a=list`);
+      console.log("Cuisines:", response.data.meals); // Debugging Log
+      set({ cuisines: response.data.meals || [] });
+    } catch (error) {
+      console.error("Error fetching cuisines:", error);
+    }
   },
 
-  setSearchTerm: (term) => set({ searchTerm: term }),
-  setSelectedCategory: (category) => set({ selectedCategory: category }),
-  setSelectedCuisine: (cuisine) => set({ selectedCuisine: cuisine }),
+  // Set Search Term
+  setSearchTerm: (term) => set({ searchTerm: term, visibleCount: 9 }),
 
+  // Set Selected Category
+  setSelectedCategory: (category) => set({ selectedCategory: category, visibleCount: 10 }),
+
+  // Set Selected Cuisine
+  setSelectedCuisine: (cuisine) => set({ selectedCuisine: cuisine, visibleCount: 10 }),
+
+  // Get Filtered Recipes
   getFilteredRecipes: () => {
-    let filtered = get().recipes;
-    if (get().searchTerm)
-      filtered = filtered.filter((r) =>
-        r.strMeal.toLowerCase().includes(get().searchTerm.toLowerCase())
-      );
-    if (get().selectedCategory)
-      filtered = filtered.filter((r) => r.strCategory === get().selectedCategory);
-    if (get().selectedCuisine)
-      filtered = filtered.filter((r) => r.strArea === get().selectedCuisine);
-
-    return filtered;
+    return get().recipes; // Directly return recipes as they are already filtered by API
   },
 
+  // Toggle Favorite Recipes
   toggleFavorite: (meal) => {
     const favorites = get().favoriteRecipes;
     const exists = favorites.find((fav) => fav.idMeal === meal.idMeal);
@@ -57,5 +104,9 @@ export const useRecipeStore = create((set, get) => ({
     }
   },
 
+  // Load More Recipes
+  loadMoreRecipes: () => set((state) => ({ visibleCount: state.visibleCount + 10 })),
+
   selectMeal: (meal) => set({ selectedMeal: meal }),
 }));
+

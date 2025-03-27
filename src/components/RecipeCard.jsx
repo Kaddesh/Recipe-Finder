@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecipeStore } from "../store/useRecipeStore";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
