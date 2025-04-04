@@ -9,3 +9,9 @@
 #root {
     height: 100vh;
 }
+
+body {
+  max-width: 90rem;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
