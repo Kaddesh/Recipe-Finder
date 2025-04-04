@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
-import { FaCog, FaBars, FaTimes } from "react-icons/fa"; 
+import { FaBars, FaTimes } from "react-icons/fa"; 
 
 const Navbar = () => {
   const { isAuthenticated, logout, user } = useAuthStore();
