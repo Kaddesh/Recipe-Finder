@@ -57,10 +57,10 @@ const Home = () => {
   console.log('recipeso', recipes)  */}
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="">
       {/* Hero Section */}
         <Hero />
-        <main className="p-6 lg:p-20">
+        <main className="max-w-7xl mx-auto p-6 lg:p-20">
              {/* Search Bar & Filters */}
         <SearchBar />
 
