@@ -38,7 +38,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 z-10 w-screen">
     <nav className="bg-linear-to-r from-slate-200 to-orange-600 shadow-lg p-4 lg:px-20  flex items-center justify-between">
-      <Link to="/" className="text-2xl text-orange-500 hover:text-orange-900 font-bold font-inter">TastySearch</Link>
+      <Link to="/" className="text-2xl text-orange-500 hover:text-orange-900 font-bold font-inter">FamilyMeal</Link>
 
       {/* Hamburger icon for mobile view */}
       <button onClick={handleMobileToggle} className="md:hidden">
