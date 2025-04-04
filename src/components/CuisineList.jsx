@@ -7,7 +7,7 @@ const CuisineList = ({ cuisines, onSelectCuisine }) => {
         <button
           key={index}
           className="bg-gray-200 px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-500 hover:text-white transition"
-          onClick={() => onSelectCuisine(cuisine.strArea)} // ✅ Call function from Home
+          onClick={() => onSelectCuisine(cuisine.strArea)} 
         >
           {cuisine.strArea}
         </button>

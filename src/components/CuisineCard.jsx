@@ -1,11 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import countryCodes from "./data/data";
 
 const CuisineCard = ({ cuisine }) => {
+  const countryCode = countryCodes[cuisine.strArea] || "un"; 
+  
   return (
     <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center">
       <img
-        src={`https://flagcdn.com/w320/${cuisine.code}.png`} // Placeholder for country flags
+        src={`https://flagcdn.com/w320/${countryCode}.png`} 
         alt={cuisine.strArea}
         className="w-16 h-16 rounded-full mb-3"
       />

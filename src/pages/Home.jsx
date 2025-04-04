@@ -6,6 +6,7 @@ import SearchBar from "../components/SearchBar";
 import CuisineCard from "../components/CuisineCard";
 import CategoryList from "../components/CategoryList";
 import { useNavigate } from "react-router-dom";
+import Hero from "../components/hero";
 
 const Home = () => {
   const {
@@ -24,10 +25,11 @@ const Home = () => {
     getFilteredRecipes,
     loadMoreRecipes,
     visibleCount,
+    setVisibleCount,
   } = useRecipeStore();
 
-  const [visibleCuisines, setVisibleCuisines] = useState(9);
   const navigate = useNavigate();
+  const [visibleCuisines, setVisibleCuisines] = useState(9); // State for cuisines visibility
 
   // Initial Data Fetch
   useEffect(() => {
@@ -47,26 +49,29 @@ const Home = () => {
     }
   }, [selectedCategory, selectedCuisine]);
 
-  const recipes = getFilteredRecipes().filter((recipe) =>
+   const recipes = getFilteredRecipes().filter((recipe) =>
     recipe.strMeal.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  
+  ); 
+
+  {/*  const recipes = getFilteredRecipes()
+  console.log('recipeso', recipes)  */}
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto">
       {/* Hero Section */}
-      <section className="text-center py-12">
-        <h1 className="text-4xl font-bold text-orange-500">Discover Delicious Recipes</h1>
-        <p className="text-gray-600 mt-2">Find, cook, and enjoy meals from around the world.</p>
-      </section>
-
-      {/* Search Bar & Filters */}
-      <SearchBar />
+        <Hero />
+        <main className="p-6 lg:p-20">
+             {/* Search Bar & Filters */}
+        <SearchBar />
 
       {/* Recipe Categories */}
       <section className="mt-8">
         <h2 className="text-2xl font-semibold">Recipe Categories</h2>
-        <CategoryList categories={categories} onSelectCategory={setSelectedCategory} />
+        {categories.length > 0 ? (
+          <CategoryList  />
+        ) : (
+          <p className="text-center text-gray-500">No categories available.</p>
+        )}
       </section>
 
       {/* Display Recipes */}
@@ -78,33 +83,30 @@ const Home = () => {
             ? `Recipes in Cuisine: ${selectedCuisine}`
             : "Featured Recipes"}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
           {recipes.length > 0 ? (
             recipes.slice(0, visibleCount).map((recipe) => (
               <RecipeCard key={recipe.idMeal} recipe={recipe} />
             ))
           ) : (
-            <p className="text-gray-500 text-center col-span-3">No recipes available.</p>
+            <p className="text-gray-500 text-center col-span-3">No recipes found matching your search.</p>
           )}
         </div>
-
         {/* Show More / Show Less Buttons */}
         <div className="flex justify-center mt-6 space-x-4">
           {visibleCount < recipes.length && (
-            <button
-              onClick={loadMoreRecipes}
-              className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition"
-            >
-              Show More
-            </button>
+            <LoadMoreButton
+              onClick={() => loadMoreRecipes()}
+              label="Show More"
+              condition={visibleCount < recipes.length}
+            />
           )}
           {visibleCount > 10 && (
-            <button
-              onClick={() => useRecipeStore.setState({ visibleCount: 9 })}
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
-            >
-              Show Less
-            </button>
+            <LoadMoreButton
+              onClick={() => setVisibleCount(9)}
+              label="Show Less"
+              condition={visibleCount > 10}
+            />
           )}
         </div>
       </section>
@@ -144,7 +146,22 @@ const Home = () => {
           )}
         </div>
       </section>
+      </main>
     </div>
+    
+  );
+};
+
+// Load More Button Component
+const LoadMoreButton = ({ onClick, label, condition }) => {
+  if (!condition) return null;
+  return (
+    <button
+      onClick={onClick}
+      className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition"
+    >
+      {label}
+    </button>
   );
 };
 
