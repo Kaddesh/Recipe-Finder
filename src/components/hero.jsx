@@ -3,7 +3,7 @@ import React from 'react'
 const Hero = () => {
 return (
     <section 
-        className="flex flex-col items-center justify-center py-12 relative shadow-lg object-cover bg-cover px-6" 
+        className="flex flex-col items-center justify-center w-screen py-12 relative shadow-lg object-cover bg-cover px-6 lg:px-0" 
         style={{ backgroundImage: "url('./recipe4.jpg')", height: "100vh" }}
     >
         <div 
