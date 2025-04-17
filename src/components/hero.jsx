@@ -7,7 +7,7 @@ return (
         style={{ backgroundImage: "url('./recipe4.jpg')", height: "100vh" }}
     >
         <div 
-            className="absolute inset-0 bg-orange-900 opacity-50"
+            className="absolute inset-0 bg-orange-800 opacity-50"
             style={{ zIndex: 0 }}
         ></div>
         <div className="relative z-0 flex flex-col items-center justify-center  space-y-6">
